@@ -8,6 +8,7 @@
 export KSROOT=/koolshare
 source $KSROOT/scripts/base.sh
 alias echo_date='echo 【$(TZ=UTC-8 date -R +%Y年%m月%d日\ %X)】:'
+alias curl='/usr/sbin/curl'
 eval `dbus export ss`
 LOCK_FILE=/tmp/online_update.lock
 CONFIG_FILE=/koolshare/ss/ss.json

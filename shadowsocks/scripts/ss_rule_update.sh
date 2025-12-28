@@ -6,6 +6,7 @@
 eval `dbus export ss`
 source /koolshare/scripts/base.sh
 alias echo_date='echo 【$(TZ=UTC-8 date -R +%Y年%m月%d日\ %X)】:'
+alias curl='/usr/sbin/curl'
 socksopen_b=`netstat -nlp|grep -w 23456|grep -E "local|v2ray|xray|trojan-go|naive|hysteria"`
 if [ -n "$socksopen_b" ] && [ "$ss_basic_online_links_goss" == "1" ];then
 	echo_date "代理有开启，将使用代理网络..."

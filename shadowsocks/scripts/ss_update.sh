@@ -8,6 +8,7 @@ source $KSROOT/scripts/base.sh
 
 eval `dbus export ss`
 alias echo_date='echo 【$(TZ=UTC-8 date -R +%Y年%m月%d日\ %X)】:'
+alias curl='/usr/sbin/curl'
 main_url="https://raw.githubusercontent.com/cary-sas/v2ray_bin/main/380_armv5_packge"
 backup_url=""
 socksopen_b=`netstat -nlp | grep -w 23456|grep -E "local|v2ray|xray|trojan-go|naive"`

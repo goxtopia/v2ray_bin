@@ -8,6 +8,7 @@ source /koolshare/scripts/base.sh
 source helper.sh
 # Variable definitions
 alias echo_date='echo 【$(TZ=UTC-8 date -R +%Y年%m月%d日\ %X)】:'
+alias curl='/usr/sbin/curl'
 dbus set ss_basic_version_local=`cat /koolshare/ss/version`
 LOG_FILE=/tmp/syslog.log
 CONFIG_FILE=/koolshare/ss/ss.json
@@ -638,7 +639,7 @@ start_dns(){
 		echo_date 开启dns2socks，用于chinadns-ng的国外上游...
 		dns2socks 127.0.0.1:23456 "$ss_chinadns1_user" 127.0.0.1:1055 >/dev/null 2>&1 &
 		sed -e '/^server=/d' -e 's/ipset=\/.//g' -e 's/\/gfwlist//g' /koolshare/ss/rules/gfwlist.conf > /tmp/gfwlist.txt
-		chinadns-ng -N -l ${DNSF_PORT} -c ${CDN}#${DNSC_PORT} -t 127.0.0.1#1055 -g /tmp/gfwlist.txt -m /koolshare/ss/rules/cdn.txt -M >/dev/null 2>&1 &
+		chinadns-ng -N -l ${DNSF_PORT} -c ${CDN}#${DNSC_PORT} -t 127.0.0.1#1055 -g /tmp/gfwlist.txt -m /koolshare/ss/rules/cdn.txt >/dev/null 2>&1 &
 	fi
 
 	#start https_dns_proxy
@@ -1023,14 +1024,14 @@ start_kcp(){
 			-x /koolshare/bin/client_linux_arm5 \
 			-- -l 127.0.0.1:1091 \
 			-r $ss_basic_kcp_server:$ss_basic_kcp_port \
-			$KCP_CRYPT $KCP_KEY $KCP_SNDWND $KCP_RNDWND $KCP_MTU $KCP_CONN $COMP $KCP_MODE $ss_basic_kcp_extra
+			$KCP_CRYPT $KCP_KEY $KCP_SNDWND $KCP_RNDWND $KCP_MTU $KCP_CONN $COMP $KCP_MODE $ss_basic_kcp_extra >/dev/null 2>&1
 		else
 			start-stop-daemon -S -q -b -m \
 			-p /tmp/var/kcp.pid \
 			-x /koolshare/bin/client_linux_arm5 \
 			-- -l 127.0.0.1:1091 \
 			-r $ss_basic_kcp_server:$ss_basic_kcp_port \
-			$ss_basic_kcp_parameter
+			$ss_basic_kcp_parameter >/dev/null 2>&1
 		fi
 	fi
 }
@@ -1225,7 +1226,7 @@ start_koolgame(){
 		sleep 1
 	fi
 	echo_date 开启koolgame主进程...
-	start-stop-daemon -S -q -b -m -p /tmp/var/koolgame.pid -x /koolshare/bin/koolgame -- -c $CONFIG_FILE
+	start-stop-daemon -S -q -b -m -p /tmp/var/koolgame.pid -x /koolshare/bin/koolgame -- -c $CONFIG_FILE >/dev/null 2>&1
 	
 	if [ "$mangle" == "1" ] && [ "$ss_basic_udp_node" == "$ssconf_basic_node" ];then
 		if [ "$ss_basic_udp_boost_enable" == "1" ];then
